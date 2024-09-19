@@ -219,7 +219,7 @@ public class ReadTest {
     public void cellDataRead() {
         String fileName = TestFileUtil.getPath() + "demo" + File.separator + "cellDataDemo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet
-        EasyExcel.read(fileName, CellDataReadDemoData.class, new CellDataDemoHeadDataListener()).sheet().doRead();
+        EasyExcel.read(fileName, CellDataReadDemoData.class, new CellDataDemoHeadDataListener()).sheet(1).doRead();
     }
 
     /**

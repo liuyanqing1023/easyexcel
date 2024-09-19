@@ -33,4 +33,11 @@ public class TestFileUtil {
     public static File readUserHomeFile(String pathName) {
         return new File(System.getProperty("user.home") + File.separator + pathName);
     }
+
+
+    public static void main(String[] args) {
+        String str = "aplus+%282%29%E5%A4%A7%E6%96%87%E4%BB%B6%E7%9A%84%E5%89%AF%E6%9C%AC.xlsx";
+        System.out.println(str.lastIndexOf("."));
+        System.out.println(str.substring(0,str.lastIndexOf(".")));
+    }
 }

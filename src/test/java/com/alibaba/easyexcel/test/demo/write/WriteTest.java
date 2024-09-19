@@ -209,6 +209,40 @@ public class WriteTest {
     }
 
     /**
+     * 重复多次写入
+     * <p>
+     * 1. 创建excel对应的实体对象 参照{@link ComplexHeadData}
+     * <p>
+     * 2. 使用{@link ExcelProperty}注解指定复杂的头
+     * <p>
+     * 3. 直接调用二次写入即可
+     */
+    @Test
+    public void repeatedWrite2() {
+        // 方法1 如果写到同一个sheet
+        String fileName = TestFileUtil.getPath() + "repeatedWrite" + System.currentTimeMillis() + ".csv";
+        ExcelWriter excelWriter = null;
+        try {
+            // 这里 需要指定写用哪个class去写
+            excelWriter = EasyExcel.write(fileName, DemoData.class).build();
+            // 这里注意 如果同一个sheet只要创建一次
+            WriteSheet writeSheet = EasyExcel.writerSheet("模板").build();
+            // 去调用写入,这里我调用了五次，实际使用时根据数据库分页的总的页数来
+            for (int i = 0; i < 5; i++) {
+                // 分页去数据库查询数据 这里可以去数据库查询每一页的数据
+                List<DemoData> data = data();
+                excelWriter.write(data, writeSheet);
+            }
+        } finally {
+            // 千万别忘记finish 会帮忙关闭流
+            if (excelWriter != null) {
+                excelWriter.finish();
+            }
+        }
+
+    }
+
+    /**
      * 日期、数字或者自定义格式转换
      * <p>
      * 1. 创建excel对应的实体对象 参照{@link ConverterData}
@@ -509,6 +543,7 @@ public class WriteTest {
     public void noModelWrite() {
         // 写法1
         String fileName = TestFileUtil.getPath() + "noModelWrite" + System.currentTimeMillis() + ".xlsx";
+        System.out.println(fileName);
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileName).head(head()).sheet("模板").doWrite(dataList());
     }
